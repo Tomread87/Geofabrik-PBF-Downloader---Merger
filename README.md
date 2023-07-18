@@ -30,6 +30,11 @@ The Geofabrik PBF Downloader and Merger Script is a versatile and user-friendly 
     python geo_script.py
 3. Follow the on-screen prompts to select a region, countries, and initiate the download and merging process.
 
+or
+
+1. Open jupyternotebook
+2. Run the first cell if you donìt have the required libraries
+3. Run second Cell to run the script
 
 ## Features
 
