@@ -1,11 +1,9 @@
 import requests
-import pandas as pd
 from bs4 import BeautifulSoup
 import urllib.request
 from tqdm import tqdm
 import os
 import csv
-import shutil
 from datetime import datetime
 
 # function to find the neighbouring countries from an input country (key) from a csv file loaded (data)
@@ -19,7 +17,7 @@ def find_neighbours(key, data):
         if len(links)  > 0:
             print(f"Found {len(links)} neighbouring countries for {key}\n{', '.join(links)}\n")
         else:
-            print("No neighbouring vountries found")
+            print("No neighbouring countries found")
         return links
     
 def merge_pbf(key):               
@@ -124,29 +122,47 @@ else:
 
 # Print choose a country
 count = 0
+choices = []
 print("\n")
 for key in data_dict:
     print(str(count) + ": " + key)
     count = count + 1
 
-print("\n######################################################")
-choice = input("select a country, type and choose from 0 to "+str(count-1)+")\n")
-
-while not choice.isnumeric():
+def get_country_choice():
+    print("\n######################################################")
     choice = input("select a country, type and choose from 0 to "+str(count-1)+")\n")
+
+    #check if input is in range
+    while (not choice.isnumeric() or not(int(choice) >= 0 and int(choice) <= count-1)):
+        choice = input("select a country, type and choose from 0 to "+str(count-1)+")\n")
+
+    choices.append(choice)
+
+    more = ""
+    while more.lower() != "y" and more.lower() != "n":
+        more = input("Add more countries to selection? Y/N\n")
+        if more.lower() == "y":
+            get_country_choice()
+
+get_country_choice()
 
 # Get neigbouring countries
 countries = []
-country_choice = ""
-if int(choice) >= 0 and int(choice) <= count-1:
-    index = 0
-    for key in data_dict:
-        if index == int(choice):
-            country_choice = key
-            countries = find_neighbours(key, data_dict)
-            countries.append(key)
-            break
-        index += 1
+country_choice = []
+for choice in choices:
+    if int(choice) >= 0 and int(choice) <= count-1:
+        index = 0
+        for key in data_dict:
+            if index == int(choice):
+                country_choice.append(key)
+                countries.extend(find_neighbours(key, data_dict))
+                countries.append(key)
+                break
+            index += 1
+
+# Join all relevant chosen coutnruies and their neighbours
+countries = [*set(countries)]
+country_choice = "_".join([*set(country_choice)])
 
 # Create folder for downloaded files
 
@@ -154,7 +170,7 @@ if int(choice) >= 0 and int(choice) <= count-1:
 current_date = datetime.now().strftime("%y_%m_%d")
 
 # Create a new folder with the current date
-new_folder_name = f"{current_date}_{key}"
+new_folder_name = f"{current_date}_{country_choice}"
 new_folder_path = os.path.join(os.getcwd(), new_folder_name)
 os.makedirs(new_folder_path, exist_ok=True)
 
@@ -169,5 +185,5 @@ for country in countries:
         path = ''
         download_url(url, filename)
         
-merge_pbf(country_choice);
+merge_pbf(country_choice)
 os.chdir(root_app_folder)
