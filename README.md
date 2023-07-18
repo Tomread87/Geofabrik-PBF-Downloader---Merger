@@ -53,4 +53,4 @@ For questions or feedback, feel free to reach out via email: ivoteruggi@hotmail.
 
 ## Acknowledgments
 
-This project includes Country Borders data from [Geodatasource](https://www.geodatasource.com).
+This project includes a modified version of Country Borders data from [Geodatasource](https://www.geodatasource.com).
