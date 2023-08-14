@@ -1,7 +1,47 @@
-import requests
-from bs4 import BeautifulSoup
+import sys
+import subprocess
+#check if libraries are installed
+
+try:
+    import conda.cli.python_api as Conda #needs anaconda to be installed
+    print("Conda imported")
+except:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'conda.cli.python_api'])
+    print("installing missing library: conda")
+    import requests
+    print("conda imported")
+
+try:
+    import requests
+    print("requests imported")
+except:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'requests'])
+    print("installing missing library: requests")
+    import requests
+    print("requests imported")
+
+try:
+    from bs4 import BeautifulSoup
+    print("BeautifulSoup imported")
+except:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'bs4'])
+    print("installing missing library: bs4")
+    from bs4 import BeautifulSoup
+    print("BeautifulSoup imported")
+
+try:
+    from tqdm import tqdm
+    print("tqdm imported")
+except:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'tqdm'])
+    print("installing missing library: tqdm")
+    from tqdm import tqdm
+    print("tqdm imported")
+
+#import requests
+#from bs4 import BeautifulSoup
 import urllib.request
-from tqdm import tqdm
+#from tqdm import tqdm
 import os
 import csv
 from datetime import datetime
