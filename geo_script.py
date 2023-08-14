@@ -2,14 +2,14 @@ import sys
 import subprocess
 #check if libraries are installed
 
-try:
+""" try:
     import conda.cli.python_api as Conda #needs anaconda to be installed
     print("Conda imported")
 except:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'conda.cli.python_api'])
     print("installing missing library: conda")
     import requests
-    print("conda imported")
+    print("conda imported") """
 
 try:
     import requests
