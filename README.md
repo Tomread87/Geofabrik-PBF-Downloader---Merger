@@ -20,7 +20,7 @@ The Geofabrik PBF Downloader and Merger Script is a versatile and user-friendly 
 
 1. Ensure you have Python 3.x installed on your system.
 2. Install required libraries:
-    pip install beautifulsoup4 tqdm
+    pip install requests beautifulsoup4 tqdm
     conda install -c conda-forge osmium
 
 ## Usage
@@ -53,4 +53,4 @@ For questions or feedback, feel free to reach out via email: ivoteruggi@hotmail.
 
 ## Acknowledgments
 
-This project includes a modified version of Country Borders data from [Geodatasource](https://www.geodatasource.com).
+This project includes Country Borders data from [Geodatasource](https://www.geodatasource.com).
