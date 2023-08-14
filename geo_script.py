@@ -1,16 +1,24 @@
 import sys
 import subprocess
+from shutil import which
+
+#check if osmium is installed
+if which("osmium") is not None:
+    print("Osmium is installed correctly, app can merge downloaded files")
+else:
+    print("Geo app can't find osmium command, Osmium-tool is either not installed or the path is not setup correctly")
+    print("\nTo install Osmum-tool you will need anaconda installed and run the following command: \n \n   conda install -c conda-forge osmium\n \n")
+    print("you may still download all files but the app will not merge the files")
+    cont = input("would you liek to continue? Y/N")
+    while cont.lower() != "y" or cont.lower() != "n":
+        cont = input("would you liek to continue? Y/N")
+    if cont.lower() == "n":
+        print("Exiting app")
+        sys.exit()
+
+
+
 #check if libraries are installed
-
-""" try:
-    import conda.cli.python_api as Conda #needs anaconda to be installed
-    print("Conda imported")
-except:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'conda.cli.python_api'])
-    print("installing missing library: conda")
-    import requests
-    print("conda imported") """
-
 try:
     import requests
     print("requests imported")
@@ -31,7 +39,7 @@ except:
 
 try:
     from tqdm import tqdm
-    print("tqdm imported")
+    print("tqdm imported \n")
 except:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'tqdm'])
     print("installing missing library: tqdm")
