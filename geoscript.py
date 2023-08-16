@@ -7,9 +7,9 @@ if which("osmium") is not None:
     print("Osmium is installed correctly, app can merge downloaded files")
 else:
     print("Geo app can't find osmium command, Osmium-tool is either not installed or the path is not setup correctly")
-    print("\nTo install Osmum-tool you will need anaconda installed and run the following command: \n \n -tool\n \n")
+    print("\nTo install Osmum-tool you will need anaconda installed and run the following command: \n \n conda install -c conda-forge osmium-tool\n \n")
     print("you may still download all files but the app will not merge the files")
-    cont = input("would you liek to continue? Y/N")
+    cont = input("would you like to continue? Y/N")
     while cont.lower() != "y" and cont.lower() != "n":
         cont = input("would you like to continue? please type Y or N")
     if cont.lower() == "n":
@@ -240,3 +240,6 @@ def geoscript():
         geoscript()
     else:
         return
+
+# run app
+geoscript()
