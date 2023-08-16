@@ -68,7 +68,6 @@ def find_neighbours(key, data):
 def check_csv():               
     # Get a list of all files in the newly created directory
     file_list = os.listdir(os.getcwd())
-    files_string = ""
     exists = False
     for file in file_list:
         if file == "GEODATASOURCE-COUNTRY-BORDERS.CSV":
@@ -78,7 +77,6 @@ def check_csv():
     if (not exists):
         print("GEODATASOURCE-COUNTRY-BORDERS.CSV file as not found in the directory. Make sure you have GEODATASOURCE-COUNTRY-BORDERS.CSV file in the same directory from where yo uare running the script")
     
-
 # script to run the osmium merge command from cmd prompt
 def merge_pbf(key):               
     # Get a list of all files in the newly created directory
@@ -91,9 +89,9 @@ def merge_pbf(key):
     command = f'osmium merge {files_string} -o merged.pbf'
     print(command)
     os.system(f"echo {command} > text.txt")
-    os.system(f"start /wait cmd /k {command}")
+    os.system(f"start cmd {command}")
     
-    print("Files downloaded successfully. Osmium script called")
+    print("\nFiles downloaded successfully. Osmium script called\n")
 
 # shows the preogress bar from dowloading the pbf files of each country
 class DownloadProgressBar(tqdm):
@@ -111,6 +109,9 @@ def download_url(url, output_path):
 
 # main script to et user input and process it throught the various steps
 def geoscript():
+    
+    print("\n")
+
     # Send a GET request to the website
     url = "https://download.geofabrik.de"
     response = requests.get(url)
@@ -251,7 +252,7 @@ def geoscript():
     os.chdir(root_app_folder)
 
     #check if user has finised work
-    finished = input("Would you like to merge pbf fils from another country? Y/N")
+    finished = input("Would you like to merge pbf files from another country? Y/N")
     while finished.lower() != "y" and finished.lower() != "n":
         finished = input("please type Y or N")
     if finished.lower() == "y":
