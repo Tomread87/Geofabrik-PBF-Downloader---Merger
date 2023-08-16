@@ -63,7 +63,23 @@ def find_neighbours(key, data):
         else:
             print("No neighbouring countries found")
         return links
+
+# function to check if GEODATASOURCE-COUNTRY-BORDERS.CSV is present in same directory
+def check_csv():               
+    # Get a list of all files in the newly created directory
+    file_list = os.listdir(os.getcwd())
+    files_string = ""
+    exists = False
+    for file in file_list:
+        if file == "GEODATASOURCE-COUNTRY-BORDERS.CSV":
+            exists = True
+            break
     
+    if (not exists):
+        print("GEODATASOURCE-COUNTRY-BORDERS.CSV file as not found in the directory. Make sure you have GEODATASOURCE-COUNTRY-BORDERS.CSV file in the same directory from where yo uare running the script")
+    
+
+# script to run the osmium merge command from cmd prompt
 def merge_pbf(key):               
     # Get a list of all files in the newly created directory
     file_list = os.listdir(os.getcwd())
@@ -79,19 +95,21 @@ def merge_pbf(key):
     
     print("Files downloaded successfully. Osmium script called")
 
+# shows the preogress bar from dowloading the pbf files of each country
 class DownloadProgressBar(tqdm):
     def update_to(self, b=1, bsize=1, tsize=None):
         if tsize is not None:
             self.total = tsize
         self.update(b * bsize - self.n)
 
+# calls DownloadProgressBar and tells it where to download the files
 def download_url(url, output_path):
     print("downloading ")
     with DownloadProgressBar(unit='B', unit_scale=True,
                              miniters=1, desc=url.split('/')[-1]) as t:
         urllib.request.urlretrieve(url, filename=output_path, reporthook=t.update_to)
 
-
+# main script to et user input and process it throught the various steps
 def geoscript():
     # Send a GET request to the website
     url = "https://download.geofabrik.de"
@@ -240,6 +258,9 @@ def geoscript():
         geoscript()
     else:
         return
+
+#check if csv file exists in directory
+check_csv()
 
 # run app
 geoscript()
