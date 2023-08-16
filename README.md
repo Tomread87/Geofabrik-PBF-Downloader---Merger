@@ -22,7 +22,8 @@ The Geofabrik PBF Downloader and Merger Script is a versatile and user-friendly 
 2. Ensure you have anaconda installed to download osmium
 3. Install required libraries:
     pip install requests beautifulsoup4 tqdm
-    conda install -c conda-forge osmium
+4. Install Osmium, you will need Anaconda (https://anaconda.org/):
+   conda install -c conda-forge osmium-tool
 
 ## Usage
 
