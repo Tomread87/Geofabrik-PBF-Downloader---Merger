@@ -42,6 +42,8 @@ or
 
 - Choose from a variety of available regions on Geofabrik's website.
 - Select one or multiple countries of interest.
+- Automatic inclusion of neighbouring countries
+- Removal of undesired countries from the list of countries to download and merge
 - Automatically download the latest PBF files for chosen countries, including neighboring countries, into a new folder.
 - Seamlessly merge all downloaded PBF files using the osmium tool.
 
