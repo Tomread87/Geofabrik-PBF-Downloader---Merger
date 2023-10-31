@@ -9,7 +9,7 @@ else:
     print("Geo app can't find osmium command, Osmium-tool is either not installed or the path is not setup correctly")
     print("\nTo install Osmum-tool you will need anaconda installed and run the following command: \n \n conda install -c conda-forge osmium-tool\n \n")
     print("you may still download all files but the app will not merge the files")
-    cont = input("would you like to continue? Y/N")
+    cont = input("would you like to continue? Y/N: ")
     while cont.lower() != "y" and cont.lower() != "n":
         cont = input("would you like to continue? please type Y or N")
     if cont.lower() == "n":
@@ -75,7 +75,7 @@ def check_csv():
             break
     
     if (not exists):
-        print("GEODATASOURCE-COUNTRY-BORDERS.CSV file as not found in the directory. Make sure you have GEODATASOURCE-COUNTRY-BORDERS.CSV file in the same directory from where yo uare running the script")
+        print("GEODATASOURCE-COUNTRY-BORDERS.CSV file was not found in the directory. Make sure you have GEODATASOURCE-COUNTRY-BORDERS.CSV file in the same directory from where you are running the script")
     
 # script to run the osmium merge command from cmd prompt
 def merge_pbf(key):               
@@ -89,7 +89,8 @@ def merge_pbf(key):
     command = f'osmium merge {files_string} -o merged.pbf'
     print(command)
     os.system(f"echo {command} > text.txt")
-    os.system(f"start cmd {command}")
+    subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    #os.system(f"start cmd {command}")
     
     print("\nFiles downloaded successfully. Osmium script called\n")
 
@@ -107,12 +108,12 @@ def download_url(url, output_path):
                              miniters=1, desc=url.split('/')[-1]) as t:
         urllib.request.urlretrieve(url, filename=output_path, reporthook=t.update_to)
 
-# main script to et user input and process it throught the various steps
+# main script to get user input and process it throught the various steps
 def geoscript():
     
     print("\n")
 
-    # Send a GET request to the website
+    # Send a GET request to the website and collect data
     url = "https://download.geofabrik.de"
     response = requests.get(url)
 
@@ -132,7 +133,7 @@ def geoscript():
     for key in regions:
         print(f"{index}: {key}")
         index += 1
-    print("\n######################################################")
+    print("\n############### Select Region #####################\n")
     chosen_reg = input("select a region, type and choose from 0 to " + str(index-1) + "\n")
 
     while not chosen_reg.isnumeric():
@@ -192,8 +193,8 @@ def geoscript():
         count = count + 1
 
     def get_country_choice():
-        print("\n######################################################")
-        choice = input("select a country, type and choose from 0 to "+str(count-1)+")\n")
+        print("\n############### Select Country #####################\n")
+        choice = input("select a country, type and choose from 0 to "+str(count-1)+"\n")
 
         #check if input is in range
         while (not choice.isnumeric() or not(int(choice) >= 0 and int(choice) <= count-1)):
@@ -223,11 +224,53 @@ def geoscript():
                     break
                 index += 1
 
-    # Join all relevant chosen coutnruies and their neighbours
+    # Join all relevant chosen countries and their neighbours
     countries = [*set(countries)]
-    country_choice = "_".join([*set(country_choice)])
+    
 
-    # Create folder for downloaded files
+    ### Ask user to remove any of the countries ###
+    def remove_country():
+        print("\n############### Remove Country Choice #####################\n")
+        choice = ""
+        exitWhile = False
+
+
+        while choice.lower() != "y" and choice.lower() != "n" or not exitWhile:
+            print("Geodata from the following countries will be downloaded and merged:")
+            nc = 0
+            for c in countries:
+                print(str(nc) + " " + c)
+                nc += 1
+            choice = input("Do you want to remove any countries from? please type Y or N\n")
+            if choice.lower() == "y":
+
+                exitChoice = False
+                while not exitChoice:
+                    number = input("Select the country to remove. Enter a number from 0 to " + str(len(countries) - 1) + " or press c to cancel: ")
+                    if number.isdigit():
+                        number = int(number)
+                        if 0 <= number < len(countries):
+                            # Valid number, you can use it to remove the country from the list
+                            removed_country = countries.pop(number)
+                            print(f"Removed country: {removed_country}")
+                            exitChoice = True
+                        else:
+                            print("Number is out of range.")
+                    elif number.lower() == "c":
+                        exitChoice = True
+                    else:
+                        print("Invalid input. Please enter a valid number between 0 and " + str(len(countries) - 1) + " or press c to cancel: ")
+            if choice.lower() == "n":
+                exitWhile = True
+
+        print("\n############### Starting Downloads #####################\n")
+
+    remove_country()
+
+   
+
+    ### Create folder for downloaded files ###
+    country_choice = "_".join([*set(country_choice)])
 
     # Get the current date
     current_date = datetime.now().strftime("%y_%m_%d")
@@ -252,7 +295,7 @@ def geoscript():
     os.chdir(root_app_folder)
 
     #check if user has finised work
-    finished = input("Would you like to merge pbf files from another country? Y/N")
+    finished = input("Would you like to merge pbf files from another country? Y/N: ")
     while finished.lower() != "y" and finished.lower() != "n":
         finished = input("please type Y or N")
     if finished.lower() == "y":
