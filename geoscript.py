@@ -86,7 +86,7 @@ def merge_pbf(key):
         if file.endswith(".pbf"):
             files_string +=  f" {file}"
 
-    #command = f'osmium merge {files_string} -o merged.pbf'
+    #keep check command for future bug reports
     command = f'osmium merge{files_string} -o merged.pbf'
     print(command)
     os.system(f"echo {command} > text.txt")
