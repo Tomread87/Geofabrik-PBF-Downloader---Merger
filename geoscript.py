@@ -86,7 +86,8 @@ def merge_pbf(key):
         if file.endswith(".pbf"):
             files_string +=  f" {file}"
 
-    command = f'osmium merge {files_string} -o merged.pbf'
+    #command = f'osmium merge {files_string} -o merged.pbf'
+    command = f'osmium merge{files_string} -o merged.pbf'
     print(command)
     os.system(f"echo {command} > text.txt")
     subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
